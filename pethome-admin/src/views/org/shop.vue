@@ -21,7 +21,7 @@
 			</el-table-column>
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="name" label="部门名称" width="240" sortable>
+			<el-table-column prop="name" label="商家名称" width="240" sortable>
 			</el-table-column>
 			<el-table-column prop="sn" label="部门编号" width="240" sortable>
 			</el-table-column>
