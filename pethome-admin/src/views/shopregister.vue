@@ -18,7 +18,11 @@
             <el-form-item prop="logo" label="店铺Logo">
                 <el-upload
                         class="upload-demo"
+<<<<<<< HEAD
                         action="http://localhost:1030/services/common/fastDfs/"
+=======
+                        action="http://localhost:8080/dfs"
+>>>>>>> a
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
                         :on-success="handleSuccess"
@@ -189,6 +193,7 @@
                 console.log(response);
                 console.log(file);
                 console.log(fileList);
+<<<<<<< HEAD
                 this.shop.logo = response.resultObj;
             },
             handleRemove(file, fileList) {
@@ -198,11 +203,26 @@
                         if(res.data.success){
                             this.$message({
                                 message: '删除成功!',
+=======
+                this.shop.logo = response.object;
+            },
+            handleRemove(file, fileList) {
+                var filePath =this.shop.logo;
+                this.$http.delete("/dfs?path="+filePath)
+                    .then(res=>{
+                        if(res.data.success){
+                            this.$message({
+                                message: res.data.message,
+>>>>>>> a
                                 type: 'success'
                             });
                         }else{
                             this.$message({
+<<<<<<< HEAD
                                 message: '删除失败!',
+=======
+                                message: res.data.message,
+>>>>>>> a
                                 type: 'error'
                             });
                         }
@@ -212,7 +232,11 @@
 
 
             handlePreview(file) {
+<<<<<<< HEAD
                 console.log(file);
+=======
+                this.$http.delete("/dfs?path="+"/sdsds/saasfa/dasdsa",);
+>>>>>>> a
             },
             settledIn(){
                 this.$refs.shopForm.validate((valid) => {

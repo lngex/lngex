@@ -1,8 +1,6 @@
 import Login from './views/Login.vue'
 import NotFound from './views/404.vue'
 import Home from './views/Home.vue'
-import Form from './views/nav1/Form.vue'
-import user from './views/nav1/user.vue'
 import Page4 from './views/nav2/Page4.vue'
 import Page5 from './views/nav2/Page5.vue'
 import Page6 from './views/nav3/Page6.vue'
@@ -10,22 +8,14 @@ import echarts from './views/charts/echarts.vue'
 
 /*  廖建波 */
 import Department from './views/org/department.vue'
+import Ds from './views/org/ds.vue'
 import Employee from './views/org/employee.vue'
-import Systemdictionarydetail from './views/system/systemdictionarydetail.vue'
-import Systemdictionarytype from './views/system/systemdictionarytype.vue'
-import ShopRegister from './views/shopregister.vue'
 /*=============================================*/
 
 let routes = [
     {
         path: '/login',
         component: Login,
-        name: '',
-        hidden: true
-    },
-    {
-        path: '/shopregister',
-        component: ShopRegister,
         name: '',
         hidden: true
     },
@@ -44,8 +34,7 @@ let routes = [
         iconCls: 'fa fa-bar-chart',
         children: [
             { path: '/echarts', component: echarts, name: 'echarts' }
-        ]
-    },
+        ]},
     {
         path: '/',
         component: Home,
@@ -54,17 +43,17 @@ let routes = [
         children: [
             { path: '/department', component: Department, name: '部门管理' },
             { path: '/employee', component: Employee, name: '员工管理' },
-            { path: '/user', component: user, name: '列表' },
+            { path: '/ds', component: Ds, name: '测试页面' },
         ]
     },
     {
         path: '/',
         component: Home,
-        name: '系统管理',
+        name: '导航二',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/systemdictionarytype', component: Systemdictionarytype, name: '数据词典类型' },
-            { path: '/systemdictionarydetail', component: Systemdictionarydetail, name: '数据字典' }
+            { path: '/page4', component: Page4, name: '页面4' },
+            { path: '/page5', component: Page5, name: '页面5' }
         ]
     },
     {
