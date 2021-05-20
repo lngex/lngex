@@ -21,22 +21,26 @@
 			</el-table-column>
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="name" label="商家名称" width="240" sortable>
+			<el-table-column prop="name" label="商家名称" width="120" sortable>
 			</el-table-column>
-			<el-table-column prop="sn" label="部门编号" width="240" sortable>
+			<el-table-column prop="tel" label="商家电话" width="120" sortable>
 			</el-table-column>
-			<el-table-column prop="dirPath" label="上级" width="240" sortable>
+			<el-table-column prop="registerTime" label="入驻时间" width="120" sortable>
 			</el-table-column>
-			<el-table-column prop="state" label="启用状态" width="240" :formatter="formatSex" sortable>
+			<el-table-column prop="state" label="商家状态" width="120" :formatter="formatSex" sortable>
 				<template scope="scope">
-					<span v-if="scope.row.state == 0" style="color: green">已启用</span>
-					<span v-else-if="scope.row.state == -1" style="color: red">未启用</span>
+					<span v-if="scope.row.state == 0" style="color: green">待审核</span>
+					<span v-else-if="scope.row.state == 1" style="color: green">开业</span>
+					<span v-else-if="scope.row.state == 2" style="color: green">歇业</span>
+					<span v-else-if="scope.row.state == -1" style="color: red">未通过</span>
 					<span v-else style="color: pink">什么也没有</span>
 				</template>
 			</el-table-column>
-			<el-table-column prop="manager.username" label="管理员" width="240" sortable>
+			<el-table-column prop="admin.username" label="管理员" width="240" sortable>
 			</el-table-column>
-			<el-table-column prop="parent.name" label="上级部门"sortable>
+			<el-table-column prop="address" label="地址"sortable>
+			</el-table-column>
+			<el-table-column prop="logo" label="logo"sortable>
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
@@ -62,21 +66,23 @@
 		<!--编辑界面-->
 		<el-dialog title="编辑" :visible.sync="shopFormVisible" :close-on-click-modal="false">
 			<el-form :model="shopForm" label-width="80px" :rules="shopFormRules" ref="shopForm">
-				<el-form-item label="部门名称" prop="name">
+				<el-form-item label="商家名称" prop="name">
 					<el-input v-model="shopForm.name" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="部门编号" prop="sn">
-					<el-input v-model="shopForm.sn" auto-complete="off"></el-input>
+				<el-form-item label="商家电话" prop="tel">
+					<el-input v-model="shopForm.tel" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="部门状态">
+				<el-form-item label="商家状态">
 					<el-radio-group v-model="shopForm.state">
-						<el-radio class="radio" :label="0">启用</el-radio>
-						<el-radio class="radio" :label="-1">禁用</el-radio>
+						<el-radio class="radio" :label="0">待审核</el-radio>
+						<el-radio class="radio" :label="1">营业</el-radio>
+						<el-radio class="radio" :label="2">歇业</el-radio>
+						<el-radio class="radio" :label="-1">拒绝通过</el-radio>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item label="管理员" prop="managerId">
 					<!-- value-key若为引用类型，value-key必选，映射:key -->
-					<el-select v-model="shopForm.manager" value-key="id" placeholder="请选择">
+					<el-select v-model="shopForm.admin" value-key="id" placeholder="请选择">
 						<!-- v-for遍历集合
 							:key：作为唯一索引
 							:label：选中后的显示数据
@@ -92,11 +98,8 @@
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="父级部门" prop="parent">
-					<el-cascader  v-model="shopForm.parent"
-							:options="parents"
-							:props="{ checkStrictly: true,value:'id',label:'name'}"
-							clearable></el-cascader>
+				<el-form-item label="地址" prop="address">
+					<el-input v-model="shopForm.address" auto-complete="off"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -144,21 +147,17 @@
 				shopForm: {
 					id: null,
 					name: '',
-					sn: '',
+					tel: '',
 					state: -1,
-					manager: null,
-					parent: null,
+					admin: null,
+					logo: null,
+					address: null,
+					registerTime:null
 				},
 
 			}
 		},
 		methods: {
-			getCasecade(){
-				this.$http.get("/shop/case")
-				.then(res=>{
-					this.parents=res.data
-				})
-			},
 			getManagerList(){
 				this.$http.get("/emp")
 				.then(res=>{
@@ -219,16 +218,8 @@
 			},
 			//显示编辑界面
 			handleEdit: function (index, row) {
-				this.getCasecade()
 				this.shopFormVisible = true;
 				this.shopForm = Object.assign({}, row)
-				let arr = row.dirPath.split("/")
-				console.log(arr)
-			  if(arr.length>2&&arr.length<=3){
-					this.shopForm.parent = [parseInt(arr[1])]
-				}else if(arr.length>3) {
-					this.shopForm.parent = [parseInt(arr[arr.length - 3]), parseInt(arr[arr.length - 2])]
-				}
 
 			},
 			//显示新增界面
