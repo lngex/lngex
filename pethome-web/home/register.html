@@ -68,24 +68,24 @@
 
                     </div>
 
-                    <div class="am-tab-panel">
-                        <form method="post" id="formuser">
+                    <div class="am-tab-panel"  id="formuser">
+                        <form method="post">
                             <div class="user-phone">
                                 <label for="phone"><i class="am-icon-mobile-phone am-icon-md"></i></label>
                                 <input id="phone" v-model="formuser.phone" name="" placeholder="请输入手机号" type="tel">
                             </div>
                             <div class="verification">
                                 <label for="code"><i class="am-icon-code-fork"></i></label>
-                                <input id="code" name="" placeholder="请输入验证码" type="tel">
+                                <input id="code" name="" v-model="formuser.verification" placeholder="请输入验证码" type="tel">
                                 <button type="button"  @click="sendMobileCode">获取</button>
                             </div>
                             <div class="user-pass">
                                 <label for="password"><i class="am-icon-lock"></i></label>
-                                <input id="password" name="" placeholder="设置密码" type="password">
+                                <input id="password" name="" v-model="formuser.password" placeholder="设置密码" type="password">
                             </div>
                             <div class="user-pass">
                                 <label for="passwordRepeat"><i class="am-icon-lock"></i></label>
-                                <input id="passwordRepeat" name="" placeholder="确认密码" type="password">
+                                <input id="passwordRepeat" v-model="formuser.passwordRepeat" name="" placeholder="确认密码" type="password">
                             </div>
                         </form>
                         <div class="login-links">
@@ -94,9 +94,8 @@
                             </label>
                         </div>
                         <div class="am-cf">
-                            <input class="am-btn am-btn-primary am-btn-sm am-fl" name="" type="submit" value="注册">
+                            <input class="am-btn am-btn-primary am-btn-sm am-fl" @click="registersubmit" name="" type="button" value="注册">
                         </div>
-
                         <hr>
                     </div>
 
@@ -141,7 +140,10 @@
         el:"#formuser",
         data:{
             formuser:{
-                phone:""
+                phone:null,
+                verification:null,
+                password:null,
+                passwordRepeat:null
             }
         },
         methods:{
@@ -155,7 +157,6 @@
                 //2.获取按钮，禁用按钮  发送时灰化不能使用，发送成功倒计时60才能使用，如果发送失败立即可以发送
                 var sendBtn = $(event.target);
                 sendBtn.attr("disabled",true);
-                alert(this.formuser.phone)
 
                 this.$http.post('/logininfo/getsms',{"phone":this.formuser.phone}).then( (res) => {
                     console.log(res.data)
@@ -186,6 +187,17 @@
                         alert(ajaxResult.message);
                     }
                 }).catch(error => alert("请求失败"));
+            },
+            registersubmit(){
+                    this.$http.post("/user/register",this.formuser).then(res=>{
+                        res=res.data
+                        if(res.success){
+                            alert("注册成功")
+                        }else {
+                            alert(res.message)
+                        }
+                    }).catch(error => alert("系统繁忙"))
+
             }
 
         }
