@@ -12,6 +12,9 @@
 
 		<link rel="stylesheet" href="../AmazeUI-2.4.2/assets/css/amazeui.css" />
 		<link href="../css/dlstyle.css" rel="stylesheet" type="text/css">
+		<script src="../js/vue/dist/vue.js"></script>
+		<script src="../js/axios/dist/axios.js"></script>
+		<script src="../js/globalvariable.js"></script>
 	</head>
 
 	<body>
@@ -33,11 +36,11 @@
 						  <form>
 							   <div class="user-name">
 								    <label for="user"><i class="am-icon-user"></i></label>
-								    <input type="text" name="" id="user" placeholder="邮箱/手机/用户名">
+								    <input type="text" v-model="userfrom.username" name="" id="user" placeholder="邮箱/手机/用户名">
                  </div>
                  <div class="user-pass">
 								    <label for="password"><i class="am-icon-lock"></i></label>
-								    <input type="password" name="" id="password" placeholder="请输入密码">
+								    <input type="password" v-model="userfrom.password" name="" id="password" placeholder="请输入密码">
                  </div>
               </form>
            </div>
@@ -49,14 +52,14 @@
 								<br />
             </div>
 								<div class="am-cf">
-									<input type="submit" name="" value="登 录" class="am-btn am-btn-primary am-btn-sm">
+									<input type="button" name="" @click="login" value="登 录" class="am-btn am-btn-primary am-btn-sm">
 								</div>
 						<div class="partner">		
 								<h3>合作账号</h3>
 							<div class="am-btn-group">
 								<li><a href="#"><i class="am-icon-qq am-icon-sm"></i><span>QQ登录</span></a></li>
 								<li><a href="#"><i class="am-icon-weibo am-icon-sm"></i><span>微博登录</span> </a></li>
-								<li><a href="#"><i class="am-icon-weixin am-icon-sm"></i><span>微信登录</span> </a></li>
+								<li><a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxd853562a0548a7d0&redirect_uri=http://bugtracker.itsource.cn/home/callback.html&response_type=code&scope=snsapi_login&state=3#wechat_redirect"><i class="am-icon-weixin am-icon-sm"></i><span>微信登录</span> </a></li>
 							</div>
 						</div>	
 
@@ -88,5 +91,37 @@
 						</div>
 					</div>
 	</body>
-
+	<script language="JavaScript">
+		new Vue({
+			el:".login-main",
+			data:{
+				userfrom:{
+					username:null,
+					password:null,
+					type:1
+				}
+			},
+			methods:{
+				login(){
+					this.$http.post("/logininfo/login",this.userfrom)
+					.then(res=>{
+						res=res.data
+						if(res.success){
+							let{token,loginInfo}=res.object
+							loginInfo = JSON.stringify(loginInfo)
+							localStorage.setItem("token",token)
+							localStorage.setItem("loginInfo",loginInfo)
+							location.href="http://localhost/index.html"
+						}else {
+							alert(res.message)
+						}
+					})
+				}
+			},
+			mounted(){
+				localStorage.removeItem("loginInfo")
+				localStorage.removeItem("token")
+			}
+		})
+	</script>
 </html>

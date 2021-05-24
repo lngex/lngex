@@ -15,17 +15,28 @@
 		<link href="../css/hmstyle.css" rel="stylesheet" type="text/css" />
 		<script src="../AmazeUI-2.4.2/assets/js/jquery.min.js"></script>
 		<script src="../AmazeUI-2.4.2/assets/js/amazeui.min.js"></script>
+		<script src="js/vue/dist/vue.js"></script>
+		<script src="js/axios/dist/axios.js"></script>
+		<script src="js/globalvariable.js"></script>
 
 	</head>
 
 	<body>
+	<div id="yy">
 		<div class="hmtop">
 			<!--顶部导航条 -->
 			<div class="am-container header">
 				<ul class="message-l">
 					<div class="topMessage">
-						<div class="menu-hd">
-							<a href="#" target="_top" class="h">亲，请登录</a>
+						<div class="menu-hd" v-if="username">
+							欢迎光临:<span style="color: red" class="h"><b>{{username}}</b></span>
+						</div>
+						<div class="menu-hd" v-else-if="phone">
+							欢迎光临:<span class="h">{{phone}}</span>
+						</div>
+
+						<div class="menu-hd" v-else="">
+							<a href="./home/login.html" target="_top" class="h">亲，请登录</a>
 							<a href="./home/register.html" target="_blank">免费注册</a>
 						</div>
 					</div>
@@ -700,13 +711,13 @@
 									<img src="../images/getAvatar.do.jpg">
 								</a>
 								<em>
-									Hi,<span class="s-name">小叮当</span>
+									Hi,<span class="s-name">{{username}}</span>
 									<a href="#"><p>点击更多优惠活动</p></a>									
 								</em>
 							</div>
-							<div class="member-logout">
-								<a class="am-btn-warning btn" href="login.html">登录</a>
-								<a class="am-btn-warning btn" href="./home/register.html" target="_blank">注册</a>
+							<div class="member-logout" v-if="!phone">
+								<a class="am-btn-warning btn" href="./home/login.html">登录</a>
+								<a class="am-btn-warning btn" href="" target="_blank">注册</a>
 							</div>
 							<div class="member-login">
 								<a href="#"><strong>0</strong>待收货</a>
@@ -1403,10 +1414,29 @@
 				</div>
 			</div>
 		</div>
+	</div>
 		<script>
 			window.jQuery || document.write('<script src="basic/js/jquery.min.js "><\/script>');
 		</script>
-		<script type="text/javascript " src="../basic/js/quick_links.js "></script>
+		<script type="text/javascript" src="../basic/js/quick_links.js "></script>
+	<script type="text/javascript">
+		new Vue({
+			el:"#yy",
+			data:{
+				username:null,
+				phone:null,
+			},
+			methods:{
+				getUsernameAndPhone(){
+					let user=JSON.parse(localStorage.getItem("loginInfo"))
+					this.username = user.username;
+					this.phone = user.phone;
+				}
+			},
+			mounted(){
+				this.getUsernameAndPhone()
+			}
+		})
+	</script>
 	</body>
-
 </html>
