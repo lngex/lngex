@@ -29,10 +29,12 @@
 				<ul class="message-l">
 					<div class="topMessage">
 						<div class="menu-hd" v-if="username">
-							欢迎光临:<span style="color: red;display: inline-block" class="h" @click="cancel"><b>{{username}}</b></span>
+							欢迎光临:<span style="color: red;display: inline-block" class="h"><b>{{username}}</b></span>
+							<img @click="cancel" src="images/tc.png" style="width: 20px"></img>
 						</div>
 						<div class="menu-hd" v-else-if="phone">
-							欢迎光临:<span class="h" @click="cancel">{{phone}}</span>
+							欢迎光临:<span class="h">{{phone}}</span>
+							<span @click="cancel" style="background-image: url(/images/tc.png)"></span>
 						</div>
 
 						<div class="menu-hd" v-else="">
