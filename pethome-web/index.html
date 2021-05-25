@@ -29,10 +29,10 @@
 				<ul class="message-l">
 					<div class="topMessage">
 						<div class="menu-hd" v-if="username">
-							欢迎光临:<span style="color: red" class="h"><b>{{username}}</b></span>
+							欢迎光临:<span style="color: red;display: inline-block" class="h" @click="cancel"><b>{{username}}</b></span>
 						</div>
 						<div class="menu-hd" v-else-if="phone">
-							欢迎光临:<span class="h">{{phone}}</span>
+							欢迎光临:<span class="h" @click="cancel">{{phone}}</span>
 						</div>
 
 						<div class="menu-hd" v-else="">
@@ -1431,6 +1431,17 @@
 					let user=JSON.parse(localStorage.getItem("loginInfo"))
 					this.username = user.username;
 					this.phone = user.phone;
+				},
+				cancel(){
+					var msg = "是否注销的登陆！";
+					if (confirm(msg)==true){
+						localStorage.removeItem("token")
+						localStorage.removeItem("loginInfo")
+						window.location.href='/home/login.html';
+						return true;
+					}else{
+						return false;
+					}
 				}
 			},
 			mounted(){

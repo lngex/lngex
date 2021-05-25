@@ -25,7 +25,7 @@ axios.interceptors.response.use(result => {
     if (!data.success && data.message === "noLogin") {
         localStorage.removeItem("token")
         localStorage.removeItem("loginInfo")
-        router.push({path: '/login'});
+        router.push({path: '../home/login'});
     }
     return result;
 }, error => {
