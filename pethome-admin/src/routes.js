@@ -15,6 +15,7 @@ import Shop from './views/org/shop.vue'
 import User from './views/org/user.vue'
 import Systemdictionarydetail from './views/system/systemdictionarydetail.vue'
 import Systemdictionarytype from './views/system/systemdictionarytype.vue'
+import Product from './views/product/product.vue'
 import ShopRegister from './views/shopregister.vue'
 /*=============================================*/
 
@@ -73,11 +74,10 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '',
+        name: '产品管理',
         iconCls: 'fa fa-address-card',
-        leaf: true,//只有一个节点
         children: [
-            { path: '/page6', component: Page6, name: '导航三' }
+            { path: '/product', component: Product, name: '服务管理' }
         ]
     },
 
