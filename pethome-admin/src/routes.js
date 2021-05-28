@@ -17,6 +17,8 @@ import Systemdictionarydetail from './views/system/systemdictionarydetail.vue'
 import Systemdictionarytype from './views/system/systemdictionarytype.vue'
 import Product from './views/product/product.vue'
 import ShopRegister from './views/shopregister.vue'
+import SearchMasterMsgProcessed from './views/pet/SearchMasterMsgProcessed.vue'
+import SearchMasterMsgPending from './views/pet/SearchMasterMsgPending.vue'
 /*=============================================*/
 
 let routes = [
@@ -78,6 +80,16 @@ let routes = [
         iconCls: 'fa fa-address-card',
         children: [
             { path: '/product', component: Product, name: '服务管理' }
+        ]
+    },
+{
+        path: '/',
+        component: Home,
+        name: '宠物管理',
+        iconCls: 'fa fa-address-card',
+        children: [
+            { path: '/SearchMasterMsgProcessed', component: SearchMasterMsgProcessed, name: '已处理' },
+            { path: '/SearchMasterMsgPending', component: SearchMasterMsgPending, name: '未处理' }
         ]
     },
 
