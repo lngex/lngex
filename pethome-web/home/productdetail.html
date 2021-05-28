@@ -125,7 +125,9 @@
 
 
 							<div class="tb-booth tb-pic tb-s310">
-								<a :href="dfs+resources[0]"><img :src="dfs+resources[0]+imgSize.min" alt="细节展示放大镜特效" :rel="dfs+resources[0]" class="jqzoom" /></a>
+								<a :href="dfs+resources[0]">
+									<img :src="dfs+resources[0]+imgSize.min" alt="细节展示放大镜特效" :rel="dfs+resources[0]" class="jqzoom" />
+								</a>
 							</div>
 							<ul class="tb-thumb" id="thumblist">
 								<li class="tb-selected" v-for="img in resources">
