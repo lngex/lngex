@@ -306,7 +306,8 @@
                 let para = {
                     currentPage: this.currentPage,
                     pageSize: this.pageSize,
-                    keyWord: this.keyWord
+                    keyWord: this.keyWord,
+                    state: null
                 };
                 this.listLoading = true;
                 this.$http.post("/product", para).then(res => {
