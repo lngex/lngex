@@ -77,7 +77,6 @@
                 <el-form-item label="服务名称" prop="resources">
                     <el-input auto-complete="off" v-model="productForm.name"></el-input>
                 </el-form-item>
-
                 <el-form-item label="资源" prop="resources">
                     <!--<el-input v-model="productForm.resources" auto-complete="off"></el-input>-->
                     <el-upload

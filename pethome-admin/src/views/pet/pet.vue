@@ -23,32 +23,30 @@
         </el-col>
 
         <!--列表-->
-        <el-table :data="products" @selection-change="selsChange" highlight-current-row style="width: 100%;"
+        <el-table :data="pets" @selection-change="selsChange" highlight-current-row style="width: 100%;"
                   v-loading="listLoading">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column type="index" width="60">
             </el-table-column>
-            <el-table-column label="服务名称" prop="name" sortable width="240">
+            <el-table-column label="宠物名称" prop="name" sortable width="240">
             </el-table-column>
-            <el-table-column label="原价" prop="costprice" sortable width="150">
+            <el-table-column label="原价" prop="costprice" sortable width="200">
             </el-table-column>
-            <el-table-column label="折扣价" prop="saleprice" sortable width="150">
+            <el-table-column label="折扣价" prop="saleprice" sortable width="200">
             </el-table-column>
-            <el-table-column label="上架时间" prop="onsaletime" sortable width="150">
+            <el-table-column label="上架时间" prop="onsaletime" sortable width="200">
             </el-table-column>
-            <el-table-column label="下架时间" prop="offsaletime" sortable width="150">
+            <el-table-column label="下架时间" prop="offsaletime" sortable width="200">
             </el-table-column>
-            <el-table-column label="启用状态" prop="state" sortable width="100">
+            <el-table-column label="启用状态" prop="state" sortable width="150">
                 <template scope="scope">
                     <span style="color: green" v-if="scope.row.state == 0">下架</span>
                     <span style="color: red" v-else-if="scope.row.state == 1">上架</span>
                     <span style="color: pink" v-else>什么也没有</span>
                 </template>
             </el-table-column>
-            <el-table-column label="进货时间" prop="createtime" sortable width="150">
-            </el-table-column>
-            <el-table-column label="销量" prop="salecount" sortable>
+            <el-table-column label="进货时间" prop="createtime" sortable >
             </el-table-column>
             <el-table-column label="操作" width="150">
                 <template scope="scope">
@@ -72,14 +70,13 @@
         </el-col>
 
         <!--编辑界面-->
-        <el-dialog :close-on-click-modal="false" :visible.sync="productFormVisible" title="编辑">
-            <el-form :model="productForm" :rules="productFormRules" label-width="80px" ref="productForm">
-                <el-form-item label="服务名称" prop="resources">
-                    <el-input auto-complete="off" v-model="productForm.name"></el-input>
+        <el-dialog :close-on-click-modal="false" :visible.sync="petFormVisible" title="编辑">
+            <el-form :model="petForm" :rules="petFormRules" label-width="80px" ref="petForm">
+                <el-form-item label="宠物名称" prop="resources">
+                    <el-input auto-complete="off" v-model="petForm.name"></el-input>
                 </el-form-item>
-
                 <el-form-item label="资源" prop="resources">
-                    <!--<el-input v-model="productForm.resources" auto-complete="off"></el-input>-->
+                    <!--<el-input v-model="petForm.resources" auto-complete="off"></el-input>-->
                     <el-upload
                             :file-list="fileList"
                             :on-preview="handlePreview"
@@ -93,25 +90,25 @@
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="折扣价" prop="saleprice">
-                    <el-input auto-complete="off" v-model="productForm.saleprice"></el-input>
+                    <el-input auto-complete="off" v-model="petForm.saleprice"></el-input>
                 </el-form-item>
                 <el-form-item label="成本价" prop="costprice">
-                    <el-input auto-complete="off" v-model="productForm.costprice"></el-input>
+                    <el-input auto-complete="off" v-model="petForm.costprice"></el-input>
                 </el-form-item>
                 <el-form-item label="简介" prop="intro">
-                    <quill-editor v-model="productForm.detail.intro"
+                    <quill-editor v-model="petForm.detail.intro"
                                   :options="quillOption">
                     </quill-editor>
                 </el-form-item>
-                <el-form-item label="预约须知" prop="orderNotice">
-                    <quill-editor v-model="productForm.detail.orderNotice"
+                <el-form-item label="预约须知" prop="adoptNotice">
+                    <quill-editor v-model="petForm.detail.adoptNotice"
                                   :options="quillOption">
                     </quill-editor>
                 </el-form-item>
             </el-form>
             <div class="dialog-footer" slot="footer">
-                <el-button @click.native="productFormVisible = false">取消</el-button>
-                <el-button :loading="productLoading" @click.native="productSubmit" type="primary">提交</el-button>
+                <el-button @click.native="petFormVisible = false">取消</el-button>
+                <el-button :loading="petLoading" @click.native="petSubmit" type="primary">提交</el-button>
             </div>
         </el-dialog>
 
@@ -137,7 +134,7 @@
                 filters: {
                     keyWord: ''
                 },
-                products: [],
+                pets: [],
                 fileList: [],
                 total: 0,
                 pageSize: 10,
@@ -145,15 +142,15 @@
                 listLoading: false,
                 keyWord: '',
                 sels: [],//列表选中列
-                productFormVisible: false,//编辑界面是否显示
-                productLoading: false,
-                productFormRules: {
+                petFormVisible: false,//编辑界面是否显示
+                petLoading: false,
+                petFormRules: {
                     name: [
                         {required: true, message: '请输入部门名称', trigger: 'blur'}
                     ],
                 },
                 //新增或者编辑界面数据
-                productForm: {
+                petForm: {
                     id: null,
                     name: '',
                     resources: '',
@@ -161,11 +158,11 @@
                     costprice: '',
                     state:0,
                     intro: '',
-                    orderNotice: '',
+                    adoptNotice: '',
                     detail: {
                         id: null,
                         intro: "",
-                        orderNotice: ""
+                        adoptNotice: ""
                     }
 
                 },
@@ -183,7 +180,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.listLoading = true;
-                    this.$http.post('/product/onsalf',ids).then((res) => {
+                    this.$http.post('/pet/onsalf',ids).then((res) => {
                         this.listLoading = false;
 
                         if(res.data.success){
@@ -197,7 +194,7 @@
                                 type: 'error'
                             });
                         }
-                        this.getProducts();
+                        this.getPets();
                     });
                 }).catch(() => {
 
@@ -215,7 +212,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.listLoading = true;
-                    this.$http.post('/product/offsalf',ids).then((res) => {
+                    this.$http.post('/pet/offsalf',ids).then((res) => {
                         this.listLoading = false;
 
                         if(res.data.success){
@@ -229,7 +226,7 @@
                                 type: 'error'
                             });
                         }
-                        this.getProducts();
+                        this.getPets();
                     });
                 }).catch(() => {
 
@@ -263,7 +260,7 @@
                         str += fileList[i].response.object + ",";
                     }
                 }
-                this.productForm.resources = str;
+                this.petForm.resources = str;
             },
             handleRemove(file, fileList) {
                 console.log(file.url)
@@ -284,7 +281,7 @@
                                     str += fileList[i].response.object + ",";
                                 }
                             }
-                            this.productForm.resources = str;
+                            this.petForm.resources = str;
                         } else {
                             this.$message({
                                 message: '删除失败!',
@@ -296,14 +293,14 @@
 
             queryPlus() {
                 this.currentPage = 1;
-                this.getProducts();
+                this.getPets();
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.getProducts();
+                this.getPets();
             },
-            //获取服务
-            getProducts: function () {
+            //获取宠物
+            getPets: function () {
                 let para = {
                     currentPage: this.currentPage,
                     pageSize: this.pageSize,
@@ -311,10 +308,10 @@
                     state: null
                 };
                 this.listLoading = true;
-                this.$http.post("/product", para).then(res => {
+                this.$http.post("/pet", para).then(res => {
                     res = res.data
                     this.total = res.total;
-                    this.products = res.rows;
+                    this.pets = res.rows;
                     this.listLoading = false;
                 })
             },
@@ -324,14 +321,14 @@
                     type: 'warning'
                 }).then(() => {
                     this.listLoading = true;
-                    this.$http.delete("/product/" + row.id, {}).then(res => {
+                    this.$http.delete("/pet/" + row.id, {}).then(res => {
                         this.listLoading = false;
                         res = res.data
                         this.$message({
                             message: res.message,
                             type: 'success'
                         });
-                        this.getProducts();
+                        this.getPets();
                     });
                 }).catch(() => {
 
@@ -339,42 +336,42 @@
             },
             //显示编辑界面
             handleEdit: function (index, row) {
-                this.productForm = {}
+                this.petForm = {}
                 this.detail = this.getDetail(row.id)
                 this.getImg(row)
                 row.detail = {}
-                this.productForm = Object.assign({}, row)
-                this.productFormVisible = true;
+                this.petForm = Object.assign({}, row)
+                this.petFormVisible = true;
             },
             //显示新增界面
             handleAdd: function () {
                 this.fileList=[]
-                this.productFormVisible = true;
-                this.productForm = {
+                this.petFormVisible = true;
+                this.petForm = {
                     id: null,
                     name: '',
                     resources: '',
                     saleprice: '',
                     costprice: '',
                     intro: '',
-                    orderNotice: '',
+                    adoptNotice: '',
                     detail: {
                         id: null,
                         intro: "",
-                        orderNotice: ""
+                        adoptNotice: ""
                     }
                 }
             },
             //编辑
-            productSubmit: function () {
-                this.$refs.productForm.validate((valid) => {
+            petSubmit: function () {
+                this.$refs.petForm.validate((valid) => {
                     if (valid) {
-                        alert(this.productForm.resources)
+                        alert(this.petForm.resources)
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.productLoading = true;
+                            this.petLoading = true;
                             //NProgress.start();
-                            let para = Object.assign({}, this.productForm);
-                            this.$http.put("/product", para).then(res => {
+                            let para = Object.assign({}, this.petForm);
+                            this.$http.put("/pet", para).then(res => {
                                 res = res.data
                                 this.listLoading = false;
                                 if (res.success) {
@@ -382,16 +379,16 @@
                                         message: res.message,
                                         type: 'success'
                                     });
-                                    this.getProducts();
+                                    this.getPets();
                                 } else {
                                     this.$message({
                                         message: res.message,
                                         type: 'error',
                                     });
                                 }
-                                this.productFormVisible = false;
-                                this.productLoading = false;
-                                this.$refs['productForm'].resetFields();
+                                this.petFormVisible = false;
+                                this.petLoading = false;
+                                this.$refs['petForm'].resetFields();
                             }).catch(erorr => {
                                 this.$message({
                                     message: '系统出错',
@@ -414,7 +411,7 @@
                     this.listLoading = true;
                     //NProgress.start();
                     let para = {ids: ids};
-                    this.$http.patch("/product", ids).then(res => {
+                    this.$http.patch("/pet", ids).then(res => {
                         res = res.data
                         this.listLoading = false;
                         if (res.success) {
@@ -423,7 +420,7 @@
                                 message: '删除成功',
                                 type: 'success'
                             });
-                            this.getProducts();
+                            this.getPets();
                         } else {
                             this.$message({
                                 message: '删除失败',
@@ -439,10 +436,10 @@
                 });
             },
             getDetail(id) {
-                this.$http.get("/productDetail/" + id).then(res => {
+                this.$http.get("/petDetail/" + id).then(res => {
                     res = res.data
                     if (res) {
-                        this.productForm.detail = res;
+                        this.petForm.detail = res;
                     }
                 }).catch(error => {
                     this.$message({
@@ -453,7 +450,7 @@
             }
         },
         mounted() {
-            this.getProducts();
+            this.getPets();
         }
     }
 

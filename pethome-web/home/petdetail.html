@@ -147,7 +147,7 @@
 						<!--名称-->
 						<div class="tb-detail-hd">
 							<h1>	
-						【五星推荐】{{product.name}}
+						【五星推荐】{{pet.name}}
 	          </h1>
 						</div>
 						<div class="tb-detail-list">
@@ -155,11 +155,11 @@
 							<div class="tb-detail-price">
 								<li class="price iteminfo_price">
 									<dt>促销价</dt>
-									<dd><em>¥</em><b class="sys_item_price">{{product.saleprice*0.85}}</b>  </dd>
+									<dd><em>¥</em><b class="sys_item_price">{{pet.saleprice*0.85}}</b>  </dd>
 								</li>
 								<li class="price iteminfo_mktprice">
 									<dt>原价</dt>
-									<dd><em>¥</em><b class="sys_item_mktprice">{{product.costprice}}</b></dd>
+									<dd><em>¥</em><b class="sys_item_mktprice">{{pet.costprice}}</b></dd>
 								</li>
 								<div class="clear"></div>
 							</div>
@@ -192,13 +192,13 @@
 							<!--销量-->
 							<ul class="tm-ind-panel">
 								<li class="tm-ind-item tm-ind-sellCount canClick">
-									<div class="tm-indcon"><span class="tm-label">月销量</span><span class="tm-count">{{(product.salecount+2)}}</span></div>
+									<div class="tm-indcon"><span class="tm-label">月销量</span><span class="tm-count">{{(pet.salecount+2)}}</span></div>
 								</li>
 								<li class="tm-ind-item tm-ind-sumCount canClick">
-									<div class="tm-indcon"><span class="tm-label">累计销量</span><span class="tm-count">{{(product.salecount+2)*3}}</span></div>
+									<div class="tm-indcon"><span class="tm-label">累计销量</span><span class="tm-count">{{(pet.salecount+2)*3}}</span></div>
 								</li>
 								<li class="tm-ind-item tm-ind-reviewCount canClick tm-line3">
-									<div class="tm-indcon"><span class="tm-label">累计评价</span><span class="tm-count">{{(product.salecount+2)*2}}</span></div>
+									<div class="tm-indcon"><span class="tm-label">累计评价</span><span class="tm-count">{{(pet.salecount+2)*2}}</span></div>
 								</li>
 							</ul>
 							<div class="clear"></div>
@@ -302,7 +302,7 @@
 							</div>
 							<li>
 								<div class="clearfix tb-btn tb-btn-buy theme-login">
-									<a id="LikBuy" title="点此按钮到下一步确认购买信息" @click="purchase" href="JavaScript:;">立即购买</a>
+									<a id="LikBuy" title="点此按钮到下一步确认购买信息" href="javascript:;" @click="purchase">立即购买</a>
 								</div>
 							</li>
 							<li>
@@ -450,7 +450,7 @@
 										<div class="attr-list-hd after-market-hd">
 											<h4>预约须知</h4>
 										</div>
-										<div class="twlistNews" v-html="detail.orderNotice">
+										<div class="twlistNews" v-html="detail.adoptNotice">
 
 										</div>
 									</div>
@@ -1318,7 +1318,7 @@
 			data: {
 				username: null,
 				phone: null,
-				product: '',
+				pet: '',
 				resources: [],
 				detail:'',
 				dfs: "http://47.95.117.210:8888",
@@ -1345,12 +1345,12 @@
 					}
 				},
 
-				getProduct() {
+				getPet() {
 					let id = parseUrlParams2Obj(location.href).id
-					this.$http.get("/product/"+id).then(res=>{
+					this.$http.get("/pet/"+id).then(res=>{
 						res=res.data
 						if(res){
-							this.product=res
+							this.pet=res
 							this.resources=res.resources.split(',')
 							this.detail=res.detail
 						}else {
@@ -1358,14 +1358,25 @@
 						}
 					}).catch(error => alert("系统繁忙"))
 				},
-				/* 购买 */
+				/* 立即购买 */
 				purchase(){
-					window.open("../home/productOrder.html?productId="+this.product.id)
+					/*this.$http.post("/pet/purchase/"+this.pet.id)
+							.then(res=>{
+								res = res.data
+								if(res.success){
+									alert("已购买")
+									location.href="../index.html"
+								}else {
+									alert(res.message)
+								}
+							}).catch(error => alert("系统繁忙"))*/
+
+					window.open("../home/petOrder.html?petId="+this.pet.id)
 				}
 			},
 			mounted() {
 				this.getUsernameAndPhone()
-				this.getProduct()
+				this.getPet()
 			}
 		})
 	</script>

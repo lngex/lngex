@@ -1,5 +1,7 @@
 <template>
     <section>
+
+        <div :v-html="pays"></div>
         <!--工具条-->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="searchForm">
@@ -46,12 +48,12 @@
             <el-table-column prop="shop.name" label="店铺"  >
             </el-table-column>
 
-            <el-table-column label="操作" width="200">
-                <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
+<!--            <el-table-column label="操作" width="200">-->
+<!--                <template scope="scope">-->
+<!--&lt;!&ndash;                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>&ndash;&gt;-->
+<!--                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
+<!--                </template>-->
+<!--            </el-table-column>-->
         </el-table>
 
         <!--工具条-->
@@ -74,7 +76,18 @@
                 <el-form-item label="成本价" prop="costprice">
                     <el-input v-model="editForm.costprice" auto-complete="off"></el-input>
                 </el-form-item>
-
+                <el-form-item label="支付方式" prop="payType">
+                    <el-select v-model="editForm.payType" placeholder="请选择">
+                        <el-option
+                                v-for="item in cities"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            <span style="float: left">{{ item.label }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="资源" prop="resources">
                     <el-upload
                             class="upload-demo"
@@ -119,6 +132,18 @@
         },
         data() {
             return {
+                cities: [{
+                    value: 0,
+                    label: "余额支付"
+                }, {
+                    value: 1,
+                    label: '三方支付'
+                }, {
+                    value: 2,
+                    label: '垫付'
+                }],
+                pays:null,
+                payType: '',
                 quillOption: quillConfig,
                 fileList:[],
                 title:'',
@@ -149,6 +174,7 @@
                     resources:'',
                     type_id:0,
                     shop_id:0,
+                    payType: null,
                     search_master_msg_id:0,
                     detail:{
                         intro:'',
@@ -338,6 +364,13 @@
                             //para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
                             this.$http.put('/pet/handle',para).then((res) => {
                                 this.editLoading = false;
+                                res=res.data
+                                if(res.success){
+                                    this.pays=res.object
+                                    alert("sasa")
+                                    alert(document.getElementById("payform"))
+                                    document.getElementById("payform").innerHTML(res.object)
+                                }
                                 //NProgress.done();
                                 this.$message({
                                     message: '提交成功',
@@ -349,7 +382,7 @@
                                 this.editFormVisible = false;
                                 //重新刷新页面数据
                                 this.getSearchMasterMsgs();
-                            });
+                            }).catch(error => alert("系统繁忙"));
                         });
                     }
                 });

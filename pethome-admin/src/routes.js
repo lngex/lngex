@@ -19,6 +19,11 @@ import Product from './views/product/product.vue'
 import ShopRegister from './views/shopregister.vue'
 import SearchMasterMsgProcessed from './views/pet/SearchMasterMsgProcessed.vue'
 import SearchMasterMsgPending from './views/pet/SearchMasterMsgPending.vue'
+import Pet from './views/pet/pet.vue'
+import PetType from './views/pet/petType.vue'
+import ProductOrder from './views/order/product.vue'
+import PetOrder from './views/order/pet.vue'
+import Acquisition from './views/order/acquisition.vue'
 /*=============================================*/
 
 let routes = [
@@ -89,7 +94,20 @@ let routes = [
         iconCls: 'fa fa-address-card',
         children: [
             { path: '/SearchMasterMsgProcessed', component: SearchMasterMsgProcessed, name: '已处理' },
-            { path: '/SearchMasterMsgPending', component: SearchMasterMsgPending, name: '未处理' }
+            { path: '/SearchMasterMsgPending', component: SearchMasterMsgPending, name: '未处理' },
+            { path: '/Pet', component: Pet, name: '宠物管理' },
+            { path: '/PetType', component: PetType, name: '宠物类型管理' }
+        ]
+    },
+{
+        path: '/',
+        component: Home,
+        name: '订单管理',
+        iconCls: 'fa fa-address-card',
+        children: [
+            { path: '/ProductOrder', component: ProductOrder, name: '服务订单' },
+            { path: '/PetOrder', component: PetOrder, name: '宠物订单' },
+            { path: '/acquisition', component: Acquisition, name: '收购订单' }
         ]
     },
 
